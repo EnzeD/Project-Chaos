@@ -19,6 +19,7 @@ public class ResourceGathering : MonoBehaviour
         resourceAmount -= amountToExtract; // Subtract the amount of fire extracted
         resourceAmount = Mathf.Max(resourceAmount, 0); // Ensure fireAmount doesn't go below 0
         Debug.Log("Extracted fire. Remaining: " + resourceAmount);
+        GetComponent<ResourceCollector>().DisplayFloatingText();
 
         if (resourceAmount <= 0)
         {

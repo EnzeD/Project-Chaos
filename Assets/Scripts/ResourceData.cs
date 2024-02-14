@@ -11,4 +11,11 @@ public class ResourceData : ScriptableObject
         totalFireCollected += amount;
         Debug.Log("Total Fire Collected: " + totalFireCollected);
     }
+
+    // Resets the resource data to its default values
+    public void ResetData()
+    {
+        totalFireCollected = 0;
+        // Add any other fields you wish to reset and set their default values here
+    }
 }
