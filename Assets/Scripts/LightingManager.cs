@@ -4,6 +4,7 @@ using UnityEngine;
 public class LightingManager : MonoBehaviour
 {
     [SerializeField] private Light DirectionalLight;
+    [SerializeField] private Light DirectionalMoonLight;
     [SerializeField] private LightingPreset Preset;
     [SerializeField, Range(0, 24)] private float TimeOfDay;
     [SerializeField] private float dayCycleLengthSeconds = 120;
@@ -56,9 +57,36 @@ public class LightingManager : MonoBehaviour
 
         if (DirectionalLight != null)
         {
-            DirectionalLight.color = Preset.DirectionalColor.Evaluate(timePercent);
-            DirectionalLight.intensity = Preset.LightIntensity.Evaluate(timePercent);
-            DirectionalLight.transform.localRotation = Quaternion.Euler(new Vector3((timePercent * 360f) - 90,120,0));
+            DirectionalLight.enabled = TimeOfDay >= 6 && TimeOfDay <= 18;
+            if (DirectionalLight.enabled)
+            {
+                DirectionalLight.color = Preset.DirectionalColor.Evaluate(timePercent);
+                DirectionalLight.intensity = Preset.LightIntensity.Evaluate(timePercent);
+                DirectionalLight.transform.localRotation = Quaternion.Euler(new Vector3((timePercent * 360f) - 90, 120, 0));
+            }
+        }
+
+        // Smooth transition for moonlight
+        if (DirectionalMoonLight != null)
+        {
+            float moonIntensity = 0f;
+            if (TimeOfDay >= 18 || TimeOfDay <= 6) // Night time
+            {
+                float nightTimePercent = 0f;
+                if (TimeOfDay >= 18)
+                {
+                    // Transition from 18 to 24 to a 0-0.125 scale
+                    nightTimePercent = (TimeOfDay - 18) / 48f;
+                }
+                else if (TimeOfDay <= 6)
+                {
+                    // Transition from 0 to 6 to a 0-0.125 scale, continuing from above
+                    nightTimePercent = (6 - TimeOfDay) / 48f;
+                }
+                moonIntensity = Mathf.Clamp01(nightTimePercent);
+            }
+
+            DirectionalMoonLight.intensity = moonIntensity;
         }
     }
 
