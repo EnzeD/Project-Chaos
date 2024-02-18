@@ -5,7 +5,7 @@ using UnityEngine;
 public class ToggleConstructionMenu : MonoBehaviour
 {
     public Animator menuAnimator;
-    private bool isOpen = false;
+    public static bool isOpen = false;
 
     public void ToggleMenu()
     {

@@ -36,7 +36,7 @@ public class PlayerController : MonoBehaviour
         bool isMoving = !agent.pathPending && agent.remainingDistance > agent.stoppingDistance;
         
         // Gathering ressources
-        if (Input.GetKeyDown(KeyCode.E) && targetedObject != null && Time.time - lastHarvestTime >= harvestRate)
+        if (Input.GetKey(KeyCode.E) && targetedObject != null && Time.time - lastHarvestTime >= harvestRate)
         {
             bool success = targetedObject.ExtractRessource(1); // Attempt to extract 1 unit of ressource
             if (success)

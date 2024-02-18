@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 [ExecuteAlways]
@@ -9,6 +10,7 @@ public class LightingManager : MonoBehaviour
     [SerializeField, Range(0, 24)] private float TimeOfDay;
     [SerializeField] private float dayCycleLengthSeconds = 120;
     [SerializeField, Range(0, 1)] private float daylightPercentage = 0.5f; // 50% day, 50% night by default
+    public TextMeshProUGUI timeText;
 
     private void Update()
     {
@@ -48,6 +50,9 @@ public class LightingManager : MonoBehaviour
         {
             UpdateLighting(TimeOfDay / 24f);
         }
+
+        // Update the displayed time
+        UpdateTimeDisplay();
     }
 
     private void UpdateLighting(float timePercent)
@@ -109,6 +114,28 @@ public class LightingManager : MonoBehaviour
                     return;
                 }
             }
+        }
+    }
+
+    void UpdateTimeDisplay()
+    {
+        // Calculate total minutes in the day
+        int totalMinutes = Mathf.RoundToInt(TimeOfDay * 60);
+
+        // Round to nearest 10 minutes
+        totalMinutes = (totalMinutes / 10) * 10;
+
+        // Convert back to hours and minutes
+        int hours = totalMinutes / 60;
+        int minutes = totalMinutes % 60;
+
+        // Format time as "HH:MM"
+        string formattedTime = string.Format("{0:00}:{1:00}", hours, minutes);
+
+        // Update the UI text
+        if (timeText != null)
+        {
+            timeText.text = formattedTime;
         }
     }
 }

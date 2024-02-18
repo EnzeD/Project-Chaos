@@ -1,0 +1,84 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7939610674461169855
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5869950131444045225}
+  - component: {fileID: 6559924363479165842}
+  m_Layer: 0
+  m_Name: Todo
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5869950131444045225
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7939610674461169855}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 960, y: 540, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6559924363479165842
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7939610674461169855}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 948c6eac03994cd49bad23b71ceeec7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  title: Core Gameplay To do
+  textList:
+  - s: Spawn ennemy wave
+    state: 0
+    show: 0
+    deleteQuestion: 0
+  - s: Add day counter
+    state: 0
+    show: 0
+    deleteQuestion: 0
+  - s: Add Chaos Shard
+    state: 0
+    show: 0
+    deleteQuestion: 0
+  - s: Add Luck Crystals
+    state: 0
+    show: 0
+    deleteQuestion: 0
+  - s: Add Tower Defense
+    state: 0
+    show: 0
+    deleteQuestion: 0
+  - s: Add Fence
+    state: 0
+    show: 0
+    deleteQuestion: 0
+  - s: Add Player Upgrade Ability
+    state: 0
+    show: 0
+    deleteQuestion: 0
+  - s: Add player spell system
+    state: 0
+    show: 0
+    deleteQuestion: 0
+  - s: 'Fix E: multplie conditions'
+    state: 0
+    show: 1
+    deleteQuestion: 0

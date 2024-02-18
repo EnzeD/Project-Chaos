@@ -5,8 +5,14 @@ using UnityEngine;
 public class ResourceGathering : MonoBehaviour
 {
     public int resourceAmount = 20; // Total amount of resource in the object
+    public bool IsDepleted = false;
 
     // Method to extract ressource from the object
+    public void Update()
+    {
+        if (IsDepleted)
+            Destroy(gameObject); // Destroy the object since it's depleted
+    }
     public bool ExtractRessource(int amountToExtract)
     {
         if (resourceAmount <= 0)
@@ -24,7 +30,7 @@ public class ResourceGathering : MonoBehaviour
         if (resourceAmount <= 0)
         {
             Debug.Log("Object is depleted of resource. Destroying object.");
-            Destroy(gameObject); // Destroy the object since it's depleted
+            IsDepleted = true;
         }
         return true; // Indicate that fire was successfully extracted
     }
