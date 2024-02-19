@@ -4,25 +4,30 @@ using TMPro;
 public class DisplayEKey : MonoBehaviour
 {
     public GameObject pressEText;
-    private GameObject textObj;
     public bool isPlayerNear = false;
+    private float detectionRadius = 5f;
     private ResourceGathering resourceGathering;
+    private GameObject player;
 
 
     private void Start()
     {
-        resourceGathering = GetComponent<ResourceGathering>(); // Assume this script is on the same GameObject
+        resourceGathering = GetComponent<ResourceGathering>();
+        player = GameObject.FindGameObjectWithTag("Player");
+        pressEText.SetActive(false);
     }
 
     private void Update()
     {
+        CheckIfPlayerIsNear(player);
+
         // Check if the resource is depleted
         bool isResourceDepleted = resourceGathering != null && resourceGathering.IsDepleted;
         
         // Display "Press E" text if the player is near and the resource is not depleted
-        if (isPlayerNear && !isResourceDepleted && !pressEText.activeInHierarchy)
+        if (isPlayerNear && !isResourceDepleted)
         {
-            Debug.Log("activate E text");
+            Debug.Log("activate E");
             pressEText.SetActive(true);
         }
         else if (isResourceDepleted || !isPlayerNear) // Hide if the resource is depleted or player is not near
@@ -32,21 +37,19 @@ public class DisplayEKey : MonoBehaviour
 
     }
 
-    private void OnTriggerEnter(Collider other)
+    private bool CheckIfPlayerIsNear(GameObject player)
     {
-        if (other.CompareTag("Player"))
+        // Check the distance between the player and this collectible
+        if (Vector3.Distance(player.transform.position, transform.position) <= detectionRadius)
         {
+            // If within range
             isPlayerNear = true;
         }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Player"))
+        else
         {
+            // If not in range
             isPlayerNear = false;
-            pressEText.SetActive(false); // Hide "Press E" text when the player leaves
-            Debug.Log("player left");
         }
+        return isPlayerNear;
     }
 }

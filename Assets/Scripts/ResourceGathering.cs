@@ -6,12 +6,22 @@ public class ResourceGathering : MonoBehaviour
 {
     public int resourceAmount = 20; // Total amount of resource in the object
     public bool IsDepleted = false;
+    private Collectible collectible;
+
+    private void Start()
+    {
+        collectible = GetComponent<Collectible>();
+    }
 
     // Method to extract ressource from the object
     public void Update()
     {
         if (IsDepleted)
+        {
+            CollectibleManager.Instance.UnregisterCollectible(collectible);
             Destroy(gameObject); // Destroy the object since it's depleted
+        }
+            
     }
     public bool ExtractRessource(int amountToExtract)
     {
