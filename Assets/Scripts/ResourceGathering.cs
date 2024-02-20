@@ -8,9 +8,17 @@ public class ResourceGathering : MonoBehaviour
     public bool IsDepleted = false;
     private Collectible collectible;
 
+    public AudioClip extractionSound;
+    private AudioSource audioSource;
+
     private void Start()
     {
         collectible = GetComponent<Collectible>();
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null) // If there's no AudioSource component, add one.
+        {
+            audioSource = gameObject.AddComponent<AudioSource>();
+        }
     }
 
     // Method to extract ressource from the object
@@ -36,6 +44,12 @@ public class ResourceGathering : MonoBehaviour
         resourceAmount = Mathf.Max(resourceAmount, 0); // Ensure fireAmount doesn't go below 0
         Debug.Log("Extracted fire. Remaining: " + resourceAmount);
         GetComponent<ResourceCollector>().DisplayFloatingText();
+
+        // Play the extraction sound effect
+        if (extractionSound != null && audioSource != null)
+        {
+            audioSource.PlayOneShot(extractionSound);
+        }
 
         if (resourceAmount <= 0)
         {

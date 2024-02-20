@@ -560,6 +560,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   resourceAmount: 5
   IsDepleted: 0
+  extractionSound: {fileID: 8300000, guid: a380eeaf3a5c71b4688c61d91145216d, type: 3}
 --- !u!54 &2748739900776374186
 Rigidbody:
   m_ObjectHideFlags: 0

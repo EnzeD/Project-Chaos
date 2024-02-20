@@ -79,6 +79,18 @@ MonoBehaviour:
     show: 0
     deleteQuestion: 0
   - s: 'Fix E: multplie conditions'
+    state: 3
+    show: 0
+    deleteQuestion: 0
+  - s: Add day & night music
+    state: 3
+    show: 1
+    deleteQuestion: 0
+  - s: Create simple menu
     state: 0
     show: 1
+    deleteQuestion: 0
+  - s: empty content item
+    state: 0
+    show: 0
     deleteQuestion: 0

@@ -12,6 +12,21 @@ public class LightingManager : MonoBehaviour
     [SerializeField, Range(0, 1)] private float daylightPercentage = 0.5f; // 50% day, 50% night by default
     public TextMeshProUGUI timeText;
 
+    // Audio sources for day and night music
+    [SerializeField] private AudioSource dayMusicSource;
+    [SerializeField] private AudioSource nightMusicSource;
+
+    private void Start()
+    {
+        dayMusicSource.loop = true;
+        nightMusicSource.loop = true;
+
+        dayMusicSource.Play();
+        nightMusicSource.Play();
+        dayMusicSource.volume = 0f;
+        nightMusicSource.volume = 0f;
+    }
+
     private void Update()
     {
         if (Preset == null)
@@ -53,6 +68,17 @@ public class LightingManager : MonoBehaviour
 
         // Update the displayed time
         UpdateTimeDisplay();
+
+        if (Application.isPlaying)
+        {
+            // Only manage music playback when the game is actually playing
+            UpdateMusicPlayback();
+        }
+        else
+        {
+            // Ensure music is not playing or is muted when not in play mode
+            EnsureAudioIsStoppedOrMuted();
+        }
     }
 
     private void UpdateLighting(float timePercent)
@@ -137,5 +163,54 @@ public class LightingManager : MonoBehaviour
         {
             timeText.text = formattedTime;
         }
+    }
+
+    private void UpdateMusicPlayback()
+    {
+        // Determine if it's day or night
+        bool isDaytime = TimeOfDay >= 6 && TimeOfDay <= 18;
+
+        // Calculate target volumes based on whether it's day or night
+        float targetDayVolume = isDaytime ? 1 : 0;
+        float targetNightVolume = isDaytime ? 0 : 1;
+
+        // Smoothly transition the volume of the audio sources
+        dayMusicSource.volume = Mathf.Lerp(dayMusicSource.volume, targetDayVolume, Time.deltaTime * 2); // Smooth transition for day music
+        nightMusicSource.volume = Mathf.Lerp(nightMusicSource.volume, targetNightVolume, Time.deltaTime * 2); // Smooth transition for night music
+
+        // Play or stop the audio sources based on the time of day
+        if (isDaytime && !dayMusicSource.isPlaying)
+        {
+            if (MenuManager.IsGamePaused)
+            {
+                dayMusicSource.volume = 0.25f;
+            }
+            else
+            {
+                dayMusicSource.Play();
+                nightMusicSource.Pause();
+            }
+
+        }
+        else if (!isDaytime && !nightMusicSource.isPlaying)
+        {
+            if (MenuManager.IsGamePaused)
+            {
+                dayMusicSource.volume = 0.25f;
+            }
+            else
+            {
+                nightMusicSource.Play();
+                dayMusicSource.Pause();
+            }
+        }
+    }
+
+    private void EnsureAudioIsStoppedOrMuted()
+    {
+        if (dayMusicSource.isPlaying)
+            dayMusicSource.Stop(); 
+        if (nightMusicSource.isPlaying)
+            nightMusicSource.Stop();
     }
 }
