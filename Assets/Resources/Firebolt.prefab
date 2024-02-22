@@ -148,7 +148,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ce042c4c89bb584f9b6f073f7fe2e8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FireboltDuration: 0.5
+  FireboltDuration: 0.75
 --- !u!1 &8969606790337587857
 GameObject:
   m_ObjectHideFlags: 0

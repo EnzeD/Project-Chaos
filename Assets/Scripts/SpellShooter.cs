@@ -1,4 +1,6 @@
+using System.Collections;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.EventSystems;
 
 public class SpellShooter : MonoBehaviour
@@ -19,6 +21,10 @@ public class SpellShooter : MonoBehaviour
 
     private float lastShotTime = float.MinValue; // Time since last shot was fired
 
+    private Animator animator;
+    private NavMeshAgent agent;
+    private Rigidbody rb;
+
     // Enum to keep track of the current power
     public enum PowerType { Fire, Water, Earth }
     public PowerType currentPower;
@@ -31,6 +37,10 @@ public class SpellShooter : MonoBehaviour
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
+        animator = GetComponent<Animator>();
+        agent = GetComponent<NavMeshAgent>();
+        rb = GetComponent<Rigidbody>();
+
         if (audioSource == null)
         {
             audioSource = gameObject.AddComponent<AudioSource>();
@@ -39,11 +49,13 @@ public class SpellShooter : MonoBehaviour
 
     void Update()
     {
+        
         // Check if the left mouse button is clicked, cooldown has elapsed, and no UI element is blocking the event
         if (Input.GetMouseButton(0) && Time.time - lastShotTime >= shootingCooldown && !EventSystem.current.IsPointerOverGameObject() && !ToggleConstructionMenu.isOpen)
         {
             ShootCurrentSpell();
             lastShotTime = Time.time; // Update the last shot time
+            
         }
         /*
         if (Input.GetMouseButton(0) && Time.time - lastShotTime >= shootingCooldown && !EventSystem.current.IsPointerOverGameObject() && ToggleConstructionMenu.isOpen)
@@ -83,9 +95,12 @@ public class SpellShooter : MonoBehaviour
                 // Calculate the direction from the player to the mouse cursor's raycast hit point
                 Vector3 direction = (hit.point - transform.position).normalized;
 
+                // Face the player in the direction of the shot
+                transform.rotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
+
                 // Set the spawn position to be 1 unit in front of the player in the direction of the raycast hit
-                Vector3 spawnPosition = transform.position + direction; // Assuming your player's scale is 1
-                spawnPosition.y = transform.position.y; // Keep Y position constant
+                Vector3 spawnPosition = transform.position + direction;
+                spawnPosition.y = transform.position.y + 1; // Keep Y position constant
 
                 // Instantiate the spell prefab at the spawn position
                 GameObject spell = Instantiate(spellPrefab, spawnPosition, Quaternion.LookRotation(direction));
@@ -106,7 +121,28 @@ public class SpellShooter : MonoBehaviour
                 {
                     audioSource.PlayOneShot(spellSound);
                 }
+                agent.isStopped = true;
+                animator.SetBool("IsCasting", true);
+
+                StartCoroutine(ResetIsCastingAndMovement());
             }
+        }
+        IEnumerator ResetIsCastingAndMovement()
+        {
+            rb.constraints &= ~(RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ);
+            // Wait for the duration of the casting animation or a fixed time
+            yield return new WaitForSeconds(0.1f); // Adjust according to your animation's length
+
+            animator.SetBool("IsCasting", false);
+
+            // Resume player movement
+            if (agent != null)
+            {
+                //agent.isStopped = false;
+            }
+
+            // Unfreeze the player's position on the X and Z axes
+            rb.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionY;
         }
     }
 }
