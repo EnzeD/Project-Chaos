@@ -51,7 +51,7 @@ public class SpellShooter : MonoBehaviour
     {
         
         // Check if the left mouse button is clicked, cooldown has elapsed, and no UI element is blocking the event
-        if (Input.GetMouseButton(0) && Time.time - lastShotTime >= shootingCooldown && !EventSystem.current.IsPointerOverGameObject() && !ToggleConstructionMenu.isOpen)
+        if (Input.GetMouseButton(1) && Time.time - lastShotTime >= shootingCooldown && !EventSystem.current.IsPointerOverGameObject() && !ToggleConstructionMenu.isOpen)
         {
             ShootCurrentSpell();
             lastShotTime = Time.time; // Update the last shot time
@@ -117,9 +117,11 @@ public class SpellShooter : MonoBehaviour
                 }
 
                 // Play the spell sound effect
-                if (spellSound != null)
+                AudioSource spellAudioSource = spell.GetComponent<AudioSource>();
+                if (spellAudioSource != null)
                 {
-                    audioSource.PlayOneShot(spellSound);
+                    spellAudioSource.volume = AudioManager.Instance.sfxVolume; // Set the volume
+                    spellAudioSource.Play(); // Play the sound attached to the spell prefab
                 }
                 agent.isStopped = true;
                 animator.SetBool("IsCasting", true);

@@ -9,7 +9,11 @@ public class ResourceData : ScriptableObject
     public void AddFire(int amount)
     {
         totalFireCollected += amount;
-        Debug.Log("Total Fire Collected: " + totalFireCollected);
+    }
+
+    public void RemoveFire(int amount)
+    {
+        totalFireCollected -= amount;
     }
 
     // Resets the resource data to its default values

@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class PlaceBuilding : MonoBehaviour
 {
@@ -23,10 +24,30 @@ public class PlaceBuilding : MonoBehaviour
     private readonly Vector3 minBoundary = new Vector3(-27, 0, -28);
     private readonly Vector3 maxBoundary = new Vector3(27, 0, 18);
 
+    // Price
+    public int priceInFire = 10;
+    public ResourceData resourceData;
+    public GameObject notEnoughFirePanel;
+    public Transform uiCanvasTransform;
+
+    public ToggleConstructionMenu menu;
+
+    // Quest
+    public static bool AFireTowerHasBeenBuilt = false;
+
     private void Start()
     {
         placedBuildingLayerMask = LayerMask.GetMask(placedBuildingLayerName);
         groundLayerMask = LayerMask.GetMask("Terrain");
+
+        if (menu == null)
+        {
+            menu = FindObjectOfType<ToggleConstructionMenu>();
+            if (menu == null)
+            {
+                Debug.LogError("ToggleConstructionMenu component not found in the scene.");
+            }
+        }
     }
 
     private void Update()
@@ -43,6 +64,13 @@ public class PlaceBuilding : MonoBehaviour
             else if (Input.GetMouseButtonDown(1))
             {
                 CancelPlacement();
+            }
+        }
+        else if (ToggleConstructionMenu.isOpen && !isPlacing)
+        {
+            if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
+            {
+                menu.ToggleMenu();
             }
         }
     }
@@ -109,22 +137,34 @@ public class PlaceBuilding : MonoBehaviour
     {
         if (isValidLocation)
         {
-            previewInstance.layer = LayerMask.NameToLayer(placedBuildingLayerName);
-
-            // Enable collider on the placed building
-            Collider buildingCollider = previewInstance.GetComponent<Collider>();
-            if (buildingCollider != null)
+            if (resourceData.totalFireCollected >= priceInFire)
             {
-                buildingCollider.enabled = true;
-            }
+                AFireTowerHasBeenBuilt = true;
+                resourceData.RemoveFire(priceInFire);
 
-            // Ensure the building is at the correct height when placed
-            Vector3 finalPosition = previewInstance.transform.position;
-            finalPosition.y = previewInstance.transform.position.y; // Adjust if necessary based on ground level
-            previewInstance.transform.position = finalPosition;
-            previewInstance = null;
-            ToggleUIFeedback(false);
-            isPlacing = false;
+                previewInstance.layer = LayerMask.NameToLayer(placedBuildingLayerName);
+
+                // Enable collider on the placed building
+                Collider buildingCollider = previewInstance.GetComponent<Collider>();
+                if (buildingCollider != null)
+                {
+                    buildingCollider.enabled = true;
+                }
+
+                // Ensure the building is at the correct height when placed
+                Vector3 finalPosition = previewInstance.transform.position;
+                finalPosition.y = previewInstance.transform.position.y; // Adjust if necessary based on ground level
+                previewInstance.transform.position = finalPosition;
+                previewInstance = null;
+                ToggleUIFeedback(false);
+                isPlacing = false;
+            }
+            else
+            {
+                GameObject panelInstance = Instantiate(notEnoughFirePanel, uiCanvasTransform.position, Quaternion.identity, uiCanvasTransform);
+                Destroy(panelInstance, 1.5f);
+                CancelPlacement();
+            }
         }
     }
 

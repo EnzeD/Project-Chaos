@@ -39,6 +39,7 @@ public class MenuManager : MonoBehaviour
         UIcanvas.SetActive(false);
         Time.timeScale = 0f; // Pause the game
         IsGamePaused = true;
+        AudioManager.Instance.OnGamePaused();
     }
 
     public void Resume()
@@ -48,6 +49,7 @@ public class MenuManager : MonoBehaviour
         pauseMenuUI.SetActive(false); // Hide the pause menu
         Time.timeScale = 1f; // Resume the game
         IsGamePaused = false;
+        AudioManager.Instance.OnGameResumed();
     }
 
     public void Quit()

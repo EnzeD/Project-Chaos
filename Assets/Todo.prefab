@@ -47,7 +47,7 @@ MonoBehaviour:
   title: Core Gameplay To do
   textList:
   - s: Spawn ennemy wave
-    state: 0
+    state: 3
     show: 0
     deleteQuestion: 0
   - s: Add day counter
@@ -62,11 +62,15 @@ MonoBehaviour:
     state: 0
     show: 0
     deleteQuestion: 0
-  - s: Add Tower Defense
+  - s: 'Add Tower Defense:
+
+      - auto target
+
+      - cast firebolt'
     state: 0
     show: 0
     deleteQuestion: 0
-  - s: Add Fence
+  - s: 'Add Fences as build element:'
     state: 0
     show: 0
     deleteQuestion: 0
@@ -75,22 +79,82 @@ MonoBehaviour:
     show: 0
     deleteQuestion: 0
   - s: Add player spell system
-    state: 0
+    state: 3
     show: 0
     deleteQuestion: 0
   - s: 'Fix E: multplie conditions'
     state: 3
     show: 0
     deleteQuestion: 0
-  - s: Add day & night music
+  - s: Add day & night system (+music)
     state: 3
-    show: 1
+    show: 0
     deleteQuestion: 0
   - s: Create simple menu
-    state: 0
-    show: 1
+    state: 3
+    show: 0
     deleteQuestion: 0
-  - s: empty content item
+  - s: Add more quests
     state: 0
     show: 0
+    deleteQuestion: 0
+  - s: Music sync with battle
+    state: 3
+    show: 0
+    deleteQuestion: 0
+  - s: Second type of mobs
+    state: 0
+    show: 0
+    deleteQuestion: 0
+  - s: 'Improve Combat:
+
+      - lifebars
+
+      - damage'
+    state: 3
+    show: 0
+    deleteQuestion: 0
+  - s: 'Improve Combat 2: AOE & Explosion'
+    state: 0
+    show: 0
+    deleteQuestion: 0
+  - s: Add Player Model and Animation
+    state: 3
+    show: 0
+    deleteQuestion: 0
+  - s: Create simple build system and UI
+    state: 3
+    show: 0
+    deleteQuestion: 0
+  - s: Add Basic Terrain and Decor
+    state: 3
+    show: 0
+    deleteQuestion: 0
+  - s: Build Main Building
+    state: 3
+    show: 0
+    deleteQuestion: 0
+  - s: Build Collectible System
+    state: 3
+    show: 0
+    deleteQuestion: 0
+  - s: Build Simple UI
+    state: 3
+    show: 0
+    deleteQuestion: 0
+  - s: Build Quest System for tutorial
+    state: 3
+    show: 0
+    deleteQuestion: 0
+  - s: Player Movement With NavMesh
+    state: 3
+    show: 0
+    deleteQuestion: 0
+  - s: 'Add building costs '
+    state: 0
+    show: 0
+    deleteQuestion: 0
+  - s: Monster damage to player or mainbuilding = more chaos
+    state: 0
+    show: 1
     deleteQuestion: 0

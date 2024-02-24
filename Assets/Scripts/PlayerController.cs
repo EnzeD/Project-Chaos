@@ -19,6 +19,7 @@ public class PlayerController : MonoBehaviour
     private ResourceGathering targetedObject; // Currently targeted objetd
     public ResourceData resourceData;
 
+
     private void Start()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -29,7 +30,7 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         // Moving the player
-        if (Input.GetMouseButtonDown(1) && !EventSystem.current.IsPointerOverGameObject())
+        if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject() && !ToggleConstructionMenu.isOpen)
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out RaycastHit hitInfo))
@@ -48,7 +49,7 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        if (Input.GetMouseButton(1) && !EventSystem.current.IsPointerOverGameObject())
+        if (Input.GetMouseButton(0) && !EventSystem.current.IsPointerOverGameObject() && !ToggleConstructionMenu.isOpen)
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
@@ -59,13 +60,13 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        animator.SetBool("IsRunning", agent.velocity.magnitude > 3f);
+        animator.SetBool("IsRunning", agent.velocity.magnitude > 5f);
 
         // Track real time of travel and compare with the estimated time
         if (isTraveling)
         {
             float realTimeOfTravel = Time.time - startTime;
-            if (realTimeOfTravel > 2*estimatedTimeOfTravel)
+            if (realTimeOfTravel > 1.2f*estimatedTimeOfTravel)
             {
                 // Stop the agent if real time exceeds the estimated time
                 agent.isStopped = true;
@@ -80,7 +81,7 @@ public class PlayerController : MonoBehaviour
         }
 
 
-        Debug.Log("velocity:" + agent.velocity.magnitude);
+        //Debug.Log("velocity:" + agent.velocity.magnitude);
 
         // Gathering ressources
         if (Input.GetKey(KeyCode.E) && targetedObject != null && Time.time - lastHarvestTime >= harvestRate)
