@@ -8,6 +8,8 @@ TagManager:
   - Terrain
   - Monster
   - ChaosSeed
+  - Defenses
+  - LuckCrystal
   layers:
   - Default
   - TransparentFX

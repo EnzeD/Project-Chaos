@@ -19,6 +19,9 @@ public class PlayerController : MonoBehaviour
     private ResourceGathering targetedObject; // Currently targeted objetd
     public ResourceData resourceData;
     public ChaosManager chaosManager;
+    public LuckManager luckManager;
+
+    public GameObject damageTextPrefab;
 
 
     private void Start()
@@ -87,6 +90,7 @@ public class PlayerController : MonoBehaviour
         // Gathering ressources
         if (Input.GetKey(KeyCode.E) && targetedObject != null && Time.time - lastHarvestTime >= harvestRate)
         {
+            Debug.Log(targetedObject);
             if (targetedObject.CompareTag("FireRock"))
             {
                 if (targetedObject.ExtractRessource(1))
@@ -105,7 +109,24 @@ public class PlayerController : MonoBehaviour
                     // Trigger wave spawn from ChaosManager
                     if (chaosManager != null)
                     {
-                        chaosManager.SpawnWave(); // Assuming SpawnWave is the method you wish to call
+                        chaosManager.SpawnWave();
+                    }
+
+                }
+            }
+            if (targetedObject.CompareTag("LuckCrystal"))
+            {
+                Debug.Log("Crystal targeted");
+                if (targetedObject.ExtractRessource(1))
+                {
+                    lastHarvestTime = Time.time;
+                    resourceData.IncreaseLuck(1); // Update total Luck
+
+                    // Trigger wave spawn from LuckManager
+                    if (luckManager != null)
+                    {
+                        luckManager.SpawnResources();
+                        Debug.Log("Spawn Resources");
                     }
 
                 }
@@ -115,7 +136,7 @@ public class PlayerController : MonoBehaviour
     // Detect if the player is within range of a collectible
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("FireRock") || other.gameObject.CompareTag("ChaosSeed"))
+        if (other.gameObject.CompareTag("FireRock") || other.gameObject.CompareTag("ChaosSeed") || other.gameObject.CompareTag("LuckCrystal"))
         {
             targetedObject = other.gameObject.GetComponent<ResourceGathering>();
         }
@@ -123,9 +144,19 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.CompareTag("FireRock") || other.gameObject.CompareTag("ChaosSeed"))
+        if (other.gameObject.CompareTag("FireRock") || other.gameObject.CompareTag("ChaosSeed") || other.gameObject.CompareTag("LuckCrystal"))
         {
             targetedObject = null; // Player is no longer near the rock
+        }
+    }
+    public void ShowDamageText(float damage, Vector3 position)
+    {
+        // Instantiate the damage text prefab at the position without setting it as a child of the monster.
+        GameObject damageTextInstance = Instantiate(damageTextPrefab, position, Quaternion.identity);
+
+        if (damageTextInstance.TryGetComponent<DamageText>(out var damageTextScript))
+        {
+            damageTextScript.SetDamage(damage);
         }
     }
 }

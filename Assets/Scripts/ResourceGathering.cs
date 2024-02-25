@@ -34,7 +34,6 @@ public class ResourceGathering : MonoBehaviour
     {
         resourceAmount -= amountToExtract; // Subtract the amount of resources extracted
         resourceAmount = Mathf.Max(resourceAmount, 0); // Ensure resourceAmount doesn't go below 0
-        Debug.Log("Extracted resource. Remaining: " + resourceAmount);
         GetComponent<ResourceCollector>().DisplayFloatingText();
 
         // Play the extraction sound effect

@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "ResourceData", menuName = "Game/Resource Data", order = 1)]
@@ -5,6 +6,7 @@ public class ResourceData : ScriptableObject
 {
     public int totalFireCollected;
     public int chaosLevel;
+    public int luckLevel;
     public bool chaosQuest = false;
 
     // Method to add fire
@@ -23,12 +25,32 @@ public class ResourceData : ScriptableObject
     {
         totalFireCollected = 0;
         chaosLevel = 0;
+        luckLevel = 0;
         chaosQuest = false;
-        // Add any other fields you wish to reset and set their default values here
     }
     public void IncrementChaos()
     {
         chaosLevel++;
+        if (chaosLevel >= 100)
+        {
+            chaosLevel = 100;
+        }
+    }
+    public void IncreaseLuck(int amount)
+    {
+        luckLevel+=amount;
+        if (luckLevel >= 100)
+        {
+            luckLevel = 100;
+        }
+    }
+    public void ReduceLuck(int amount)
+    {
+        luckLevel -= amount;
+        if (luckLevel <= 0)
+        {
+            luckLevel=0;
+        }
     }
 
     public void ReduceChaos(int amount)

@@ -538,6 +538,7 @@ MonoBehaviour:
   spawnCenterTransform: {fileID: 0}
   attackRange: 2
   resourceData: {fileID: 11400000, guid: 6805a16e60668434f87b9b2e6716e027, type: 2}
+  attackAudioClip: {fileID: 8300000, guid: 5e261cddab336034b940f8beba554b0c, type: 3}
 --- !u!114 &4133057957119389566
 MonoBehaviour:
   m_ObjectHideFlags: 0

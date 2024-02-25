@@ -22,6 +22,11 @@ public class MonsterAI : MonoBehaviour
     private float lastChaosIncrementTime = 0f;
     private readonly float attackAnimationDuration = 0.833f;
 
+    public AudioClip attackAudioClip;
+    private bool attackAudioHasBeenPlayed = false;
+
+    public PlayerController playerController;
+
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -31,6 +36,7 @@ public class MonsterAI : MonoBehaviour
         // Find and assign the player and spawn center transforms correctly
         GameObject playerObject = GameObject.Find("Player");
         if (playerObject != null) playerTransform = playerObject.transform;
+        if (playerObject != null) playerController = playerObject.GetComponent<PlayerController>();
 
         GameObject spawnCenterObject = GameObject.Find("MainBuilding");
         if (spawnCenterObject != null) spawnCenterTransform = spawnCenterObject.transform;
@@ -49,11 +55,42 @@ public class MonsterAI : MonoBehaviour
 
     void ChooseTarget()
     {
-        // Determine the closest target
-        float distanceToPlayer = Vector3.Distance(playerTransform.position, transform.position);
-        float distanceToSpawnCenter = Vector3.Distance(spawnCenterTransform.position, transform.position);
+        // Initialize closest distance with a high value
+        float closestDistance = Mathf.Infinity;
 
-        currentTarget = distanceToPlayer < distanceToSpawnCenter ? playerTransform : spawnCenterTransform;
+        // Initialize currentTarget as null
+        Transform closestTarget = null;
+
+        // Check distance to player
+        float distanceToPlayer = Vector3.Distance(playerTransform.position, transform.position);
+        if (distanceToPlayer < closestDistance)
+        {
+            closestDistance = distanceToPlayer;
+            closestTarget = playerTransform;
+        }
+
+        // Check distance to Main Building
+        float distanceToSpawnCenter = Vector3.Distance(spawnCenterTransform.position, transform.position);
+        if (distanceToSpawnCenter < closestDistance)
+        {
+            closestDistance = distanceToSpawnCenter;
+            closestTarget = spawnCenterTransform;
+        }
+
+        // Check distance to each defense
+        GameObject[] buildings = GameObject.FindGameObjectsWithTag("Defenses");
+        foreach (GameObject building in buildings)
+        {
+            float distanceToBuilding = Vector3.Distance(building.transform.position, transform.position);
+            if (distanceToBuilding < closestDistance)
+            {
+                closestDistance = distanceToBuilding;
+                closestTarget = building.transform;
+            }
+        }
+
+        // Set the closest target
+        currentTarget = closestTarget;
     }
 
     void MoveToTarget()
@@ -76,6 +113,13 @@ public class MonsterAI : MonoBehaviour
             agent.isStopped = true;
             animator.SetBool(IsWalking, false);
             animator.SetBool(IsAttacking, true);
+            if (!attackAudioHasBeenPlayed)
+            {
+                AudioManager.Instance.PlaySFX(attackAudioClip);
+                attackAudioHasBeenPlayed = true;
+                playerController.ShowDamageText(-1, playerTransform.transform.position + Vector3.up * 4);
+            }
+
         }
         else
         {
@@ -127,6 +171,7 @@ public class MonsterAI : MonoBehaviour
             {
                 resourceData.IncrementChaos(); // Increment chaos
                 lastChaosIncrementTime = Time.time; // Update the time of the last increment
+                attackAudioHasBeenPlayed = false;
             }
         }
     }
