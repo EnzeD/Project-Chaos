@@ -7,7 +7,7 @@ public class CollectibleManager : MonoBehaviour
     public static CollectibleManager Instance;
 
     public GameObject pressECue; // Assign the "Press E" UI element in the inspector
-    private HashSet<Collectible> nearbyCollectibles = new HashSet<Collectible>();
+    private readonly HashSet<Collectible> nearbyCollectibles = new();
 
     private void Awake()
     {

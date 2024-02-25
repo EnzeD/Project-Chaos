@@ -14,8 +14,7 @@ public class ResourceGathering : MonoBehaviour
     private void Start()
     {
         collectible = GetComponent<Collectible>();
-        audioSource = GetComponent<AudioSource>();
-        if (audioSource == null) // If there's no AudioSource component, add one.
+        if (!TryGetComponent<AudioSource>(out audioSource)) // If there's no AudioSource component, add one.
         {
             audioSource = gameObject.AddComponent<AudioSource>();
         }
@@ -33,29 +32,21 @@ public class ResourceGathering : MonoBehaviour
     }
     public bool ExtractRessource(int amountToExtract)
     {
-        if (resourceAmount <= 0)
-        {
-            // Optionally, destroy the rock or change its appearance when depleted
-            Debug.Log("Rock is depleted of fire.");
-            return false; // Indicate that no fire was extracted
-        }
-
-        resourceAmount -= amountToExtract; // Subtract the amount of fire extracted
-        resourceAmount = Mathf.Max(resourceAmount, 0); // Ensure fireAmount doesn't go below 0
-        Debug.Log("Extracted fire. Remaining: " + resourceAmount);
+        resourceAmount -= amountToExtract; // Subtract the amount of resources extracted
+        resourceAmount = Mathf.Max(resourceAmount, 0); // Ensure resourceAmount doesn't go below 0
+        Debug.Log("Extracted resource. Remaining: " + resourceAmount);
         GetComponent<ResourceCollector>().DisplayFloatingText();
 
         // Play the extraction sound effect
         if (extractionSound != null && audioSource != null)
         {
-            audioSource.PlayOneShot(extractionSound);
+            AudioManager.Instance.PlaySFX(extractionSound);
         }
 
         if (resourceAmount <= 0)
         {
-            Debug.Log("Object is depleted of resource. Destroying object.");
             IsDepleted = true;
         }
-        return true; // Indicate that fire was successfully extracted
+        return true; // Indicate that resource was successfully extracted
     }
 }

@@ -18,12 +18,14 @@ public class PlayerController : MonoBehaviour
     private float lastHarvestTime = 0f; // When the player last harvested ressources
     private ResourceGathering targetedObject; // Currently targeted objetd
     public ResourceData resourceData;
+    public ChaosManager chaosManager;
 
 
     private void Start()
     {
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponentInChildren<Animator>();
+        chaosManager = FindObjectOfType<ChaosManager>();
     }
 
     // Update is called once per frame
@@ -52,8 +54,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetMouseButton(0) && !EventSystem.current.IsPointerOverGameObject() && !ToggleConstructionMenu.isOpen)
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-            if (Physics.Raycast(ray, out hit, Mathf.Infinity))
+            if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity))
             {
                 agent.SetDestination(hit.point);
                 agent.isStopped = false; // Ensure the agent is allowed to move
@@ -86,30 +87,43 @@ public class PlayerController : MonoBehaviour
         // Gathering ressources
         if (Input.GetKey(KeyCode.E) && targetedObject != null && Time.time - lastHarvestTime >= harvestRate)
         {
-            bool success = targetedObject.ExtractRessource(1); // Attempt to extract 1 unit of ressource
-            if (success)
+            if (targetedObject.CompareTag("FireRock"))
             {
-                lastHarvestTime = Time.time;
-                if (targetedObject.CompareTag("FireRock"))
+                if (targetedObject.ExtractRessource(1))
                 {
+                    lastHarvestTime = Time.time;
                     resourceData.AddFire(1); // Update total fire
+                }
+            }
+            if (targetedObject.CompareTag("ChaosSeed"))
+            {
+                if (targetedObject.ExtractRessource(10))
+                {
+                    lastHarvestTime = Time.time;
+                    resourceData.ReduceChaos(10); // Update total Chaos
+
+                    // Trigger wave spawn from ChaosManager
+                    if (chaosManager != null)
+                    {
+                        chaosManager.SpawnWave(); // Assuming SpawnWave is the method you wish to call
+                    }
+
                 }
             }
         }
     }
-    // Detect if the player is within range of a fire rock
+    // Detect if the player is within range of a collectible
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("FireRock")) // Make sure your rock prefab has the "FireRock" tag
+        if (other.gameObject.CompareTag("FireRock") || other.gameObject.CompareTag("ChaosSeed"))
         {
-            Debug.Log("collide");
             targetedObject = other.gameObject.GetComponent<ResourceGathering>();
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.CompareTag("FireRock"))
+        if (other.gameObject.CompareTag("FireRock") || other.gameObject.CompareTag("ChaosSeed"))
         {
             targetedObject = null; // Player is no longer near the rock
         }

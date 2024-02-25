@@ -6,10 +6,10 @@ using UnityEngine.UI;
 public class HealthBar : MonoBehaviour
 {
     public Image fillImage;
-    [SerializeField] public float maxHealth = 100f;
+    public float maxHealth = 100f;
     public float currentHealth;
     public GameObject healthBarCanvas;
-    public Vector3 offset = new Vector3(0, 2, 0);
+    public Vector3 offset = new(0, 2, 0);
     public GameObject damageTextPrefab;
 
     // Start is called before the first frame update
@@ -21,7 +21,7 @@ public class HealthBar : MonoBehaviour
     // Update is called once per frame
     public void UpdateHealth(float healthChange)
     {
-        currentHealth = currentHealth + healthChange;
+        currentHealth += healthChange;
         if (currentHealth <= 0)
         {
             currentHealth = 0;
@@ -48,8 +48,7 @@ public class HealthBar : MonoBehaviour
         // Instantiate the damage text prefab at the position without setting it as a child of the monster.
         GameObject damageTextInstance = Instantiate(damageTextPrefab, position, Quaternion.identity);
 
-        DamageText damageTextScript = damageTextInstance.GetComponent<DamageText>();
-        if (damageTextScript != null)
+        if (damageTextInstance.TryGetComponent<DamageText>(out var damageTextScript))
         {
             damageTextScript.SetDamage(damage);
         }

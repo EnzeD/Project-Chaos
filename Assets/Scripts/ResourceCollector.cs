@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class ResourceCollector : MonoBehaviour
 {
-    [SerializeField] public GameObject floatingTextPrefab;
+    public GameObject floatingTextPrefab;
 
     public void DisplayFloatingText()
     {

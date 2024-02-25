@@ -11,6 +11,7 @@ public class QuestManager : MonoBehaviour
     public GameObject questDone;
     private SpawnManager spawnManager;
     public int questNumber;
+    private Animator parentAnimator;
 
     void Start()
     {
@@ -26,6 +27,8 @@ public class QuestManager : MonoBehaviour
             if (Input.GetMouseButtonDown(0))
             {
                 questDone.SetActive(true);
+                parentAnimator = GetComponentInParent<Animator>();
+                parentAnimator.SetTrigger("QuestCompleted");
             }
         }
         if (questNumber == 2)
@@ -34,16 +37,20 @@ public class QuestManager : MonoBehaviour
             if (Input.GetMouseButtonDown(1))
             {
                 questDone.SetActive(true);
+                parentAnimator = GetComponentInParent<Animator>();
+                parentAnimator.SetTrigger("QuestCompleted");
             }
         }
         if (questNumber == 3)
         {
             resourceText.text = "Collect \"Fire\" (" + resourceData.totalFireCollected.ToString() + "/10)";
 
-            if (resourceData.totalFireCollected >= 10)
+            if (resourceData.totalFireCollected >= 10 || questDone.activeInHierarchy)
             {
                 questDone.SetActive(true);
                 resourceText.text = "Collect \"Fire\" (10/10)";
+                parentAnimator = GetComponentInParent<Animator>();
+                parentAnimator.SetTrigger("QuestCompleted");
             }
         }
         if (questNumber == 4)
@@ -52,7 +59,9 @@ public class QuestManager : MonoBehaviour
             if (PlaceBuilding.AFireTowerHasBeenBuilt)
             {
                 questDone.SetActive(true);
-                resourceText.text = "Build a Fire Tower (0/1)";
+                resourceText.text = "Build a Fire Tower (1/1)";
+                parentAnimator = GetComponentInParent<Animator>();
+                parentAnimator.SetTrigger("QuestCompleted");
             }
         }
         if (questNumber == 5)
@@ -60,6 +69,18 @@ public class QuestManager : MonoBehaviour
             if (LightingManager.DayCounter >= 2 && spawnManager.totalMonstersAlive == 0)
             {
                 questDone.SetActive(true);
+                parentAnimator = GetComponentInParent<Animator>();
+                parentAnimator.SetTrigger("QuestCompleted");
+            }
+        }
+
+        if (questNumber == 6)
+        {
+            if (resourceData.chaosQuest)
+            {
+                questDone.SetActive(true);
+                parentAnimator = GetComponentInParent<Animator>();
+                parentAnimator.SetTrigger("QuestCompleted");
             }
         }
     }

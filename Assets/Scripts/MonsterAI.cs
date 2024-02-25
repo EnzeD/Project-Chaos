@@ -18,6 +18,10 @@ public class MonsterAI : MonoBehaviour
 
     private bool isDead;
 
+    public ResourceData resourceData;
+    private float lastChaosIncrementTime = 0f;
+    private readonly float attackAnimationDuration = 0.833f;
+
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -38,6 +42,7 @@ public class MonsterAI : MonoBehaviour
         {
             ChooseTarget();
             MoveToTarget();
+            CheckAttackCompletion();
         }
 
     }
@@ -56,8 +61,7 @@ public class MonsterAI : MonoBehaviour
         if (currentTarget == null) return;
 
         // Assuming the target has a collider component attached
-        Collider targetCollider = currentTarget.GetComponent<Collider>();
-        if (targetCollider == null)
+        if (!currentTarget.TryGetComponent<Collider>(out var targetCollider))
         {
             Debug.LogError("Target does not have a collider.", currentTarget.gameObject);
             return;
@@ -105,16 +109,37 @@ public class MonsterAI : MonoBehaviour
         spawnManager.MonsterDied();
 
         // Play the spell sound effect
-        AudioSource monsterAudioSource = gameObject.GetComponent<AudioSource>();
-        if (monsterAudioSource != null)
+        if (gameObject.TryGetComponent<AudioSource>(out var monsterAudioSource))
         {
-            monsterAudioSource.volume = AudioManager.Instance.sfxVolume; // Set the volume
-            monsterAudioSource.Play(); // Play the sound attached
+            AudioManager.Instance.PlaySFX(monsterAudioSource.clip); // Play the sound attached
         }
 
         // Destroy the monster after the length of the Die animation
-        // Assumes you have an animation clip named "Die" in your Animator
         float animationLength = animator.GetCurrentAnimatorStateInfo(0).length;
         Destroy(gameObject, animationLength);
+    }
+    public void OnAttackComplete()
+    {
+        // Check if enough time has passed since the last chaos increment
+        if (Time.time - lastChaosIncrementTime >= attackAnimationDuration)
+        {
+            if (resourceData != null)
+            {
+                resourceData.IncrementChaos(); // Increment chaos
+                lastChaosIncrementTime = Time.time; // Update the time of the last increment
+            }
+        }
+    }
+    void CheckAttackCompletion()
+    {
+        AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+        bool isAttacking = stateInfo.IsName("Attack01"); 
+
+        // Check if the animation is playing and nearing its end
+        if (isAttacking && stateInfo.normalizedTime >= 0.95f) // 0.95 is near the end
+        {
+            OnAttackComplete();
+            Debug.Log("attack complete");
+        }
     }
 }

@@ -58,7 +58,12 @@ public class AudioManager : MonoBehaviour
 
     public void PlayDayMusic()
     {
-        StartCoroutine(FadeMusic(dayMusicSource, nightMusicSource, 1.0f));
+        // Check if dayMusicSource is already playing
+        if (!dayMusicSource.isPlaying)
+        {
+            // Start playing day music with fade in if needed
+            StartCoroutine(FadeMusic(dayMusicSource, nightMusicSource, 1.0f));
+        }
     }
 
     IEnumerator FadeMusic(AudioSource fadeInSource, AudioSource fadeOutSource, float duration)
@@ -80,12 +85,16 @@ public class AudioManager : MonoBehaviour
         fadeOutSource.Stop();
         fadeOutSource.volume = musicVolume; // Reset volume for next play
     }
-    public void PlaySFX(AudioClip clip, Vector3 position)
+
+    public void PlaySFX(AudioClip clip)
     {
-        if (clip != null)
+        AudioSource sfxSource = gameObject.AddComponent<AudioSource>();
+        sfxSource.clip = clip;
+        if (clip != null && sfxSource != null)
         {
-            AudioSource.PlayClipAtPoint(clip, position, sfxVolume);
+            sfxSource.PlayOneShot(clip, sfxVolume);
         }
+        Destroy(sfxSource, 1f);
     }
 
     public void SetSFXVolume(float volume)

@@ -13,3 +13,5 @@ MonoBehaviour:
   m_Name: ResourceData
   m_EditorClassIdentifier: 
   totalFireCollected: 0
+  chaosLevel: 0
+  chaosQuest: 0

@@ -106,8 +106,7 @@ public class SpellShooter : MonoBehaviour
                 GameObject spell = Instantiate(spellPrefab, spawnPosition, Quaternion.LookRotation(direction));
 
                 // Set the velocity to move the spell, ensuring Y component is 0 for constant height
-                Rigidbody spellRb = spell.GetComponent<Rigidbody>();
-                if (spellRb != null)
+                if (spell.TryGetComponent<Rigidbody>(out var spellRb))
                 {
                     spellRb.velocity = new Vector3(direction.x, 0, direction.z) * spellSpeed;
                 }
@@ -117,11 +116,9 @@ public class SpellShooter : MonoBehaviour
                 }
 
                 // Play the spell sound effect
-                AudioSource spellAudioSource = spell.GetComponent<AudioSource>();
-                if (spellAudioSource != null)
+                if (spell.TryGetComponent<AudioSource>(out AudioSource spellAudioSource))
                 {
-                    spellAudioSource.volume = AudioManager.Instance.sfxVolume; // Set the volume
-                    spellAudioSource.Play(); // Play the sound attached to the spell prefab
+                    AudioManager.Instance.PlaySFX(spellSound); // Play the sound attached to the spell prefab
                 }
                 agent.isStopped = true;
                 animator.SetBool("IsCasting", true);

@@ -11,7 +11,7 @@ public class SpawnWave
 
 public class SpawnManager : MonoBehaviour
 {
-    [SerializeField] private List<SpawnWave> spawnWaves = new List<SpawnWave>();
+    [SerializeField] private List<SpawnWave> spawnWaves = new();
     public float spawnRadiusMax = 100f; // Distance from the spawn point
     public float spawnRadiusMin = 80f; // Distance from the spawn point
     public Transform spawnCenter;
@@ -60,7 +60,7 @@ public class SpawnManager : MonoBehaviour
     public void MonsterDied()
     {
         totalMonstersAlive--;
-        if (totalMonstersAlive == 0)
+         if (totalMonstersAlive <= 0)
         {
             AudioManager.Instance.PlayDayMusic();
         }

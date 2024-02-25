@@ -19,18 +19,21 @@ public class FireboltMovement : MonoBehaviour
         // Check if the firebolt hits a monster
         if (collision.gameObject.CompareTag("Monster"))
         {
-            // Update health and trigger death
-            MonsterAI monsterAI = collision.gameObject.GetComponent<MonsterAI>();
             HealthBar monsterHealth = collision.gameObject.GetComponent<HealthBar>();
-            if (monsterAI != null)
+            if (monsterHealth.currentHealth > 0)
             {
-                monsterHealth.UpdateHealth(-SpellDamage);
-                if (monsterHealth.currentHealth <= 0) 
+                // Update health and trigger death
+                
+                if (collision.gameObject.TryGetComponent<MonsterAI>(out var monsterAI))
                 {
-                    monsterAI.Die();
+                    monsterHealth.UpdateHealth(-SpellDamage);
+                    if (monsterHealth.currentHealth <= 0)
+                    {
+                        monsterAI.Die();
+                    }
                 }
+                Destroy(gameObject); // Destroy the firebolt on collision with a monster
             }
-            Destroy(gameObject); // Destroy the firebolt on collision with a monster
         }
     }
 }

@@ -55,7 +55,7 @@ public class TowerAI : MonoBehaviour
 
             // Calculate the spawn position 1 unit away from the tower towards the target
           
-            Vector3 spawnOffset = new Vector3(1, 6.5f, -1);
+            Vector3 spawnOffset = new(1, 6.5f, -1);
             Vector3 spawnPosition = transform.position + transform.TransformDirection(spawnOffset) + direction * 1.5f;
 
             // Instantiate the firebolt prefab at the calculated spawn position
@@ -68,8 +68,7 @@ public class TowerAI : MonoBehaviour
             }
             fireboltMovement.FireboltDuration = projectileDuration;
             // Apply velocity to the firebolt to move it towards the enemy
-            Rigidbody fireboltRb = fireboltInstance.GetComponent<Rigidbody>();
-            if (fireboltRb != null)
+            if (fireboltInstance.TryGetComponent<Rigidbody>(out var fireboltRb))
             {
                 fireboltRb.velocity = direction * spellSpeed;
             }
@@ -79,8 +78,7 @@ public class TowerAI : MonoBehaviour
             }
 
             // Play the spell sound effect
-            AudioSource spellAudioSource = fireboltRb.GetComponent<AudioSource>();
-            if (spellAudioSource != null)
+            if (fireboltRb.TryGetComponent<AudioSource>(out var spellAudioSource))
             {
                 spellAudioSource.volume = AudioManager.Instance.sfxVolume; // Set the volume
                 spellAudioSource.Play(); // Play the sound attached to the spell prefab
