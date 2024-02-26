@@ -150,7 +150,7 @@ public class MonsterAI : MonoBehaviour
         animator.SetTrigger("Die");
 
         // Share with the spawn manager
-        spawnManager.MonsterDied();
+        spawnManager.MonsterDied(gameObject.transform);
 
         // Play the spell sound effect
         if (gameObject.TryGetComponent<AudioSource>(out var monsterAudioSource))
@@ -184,7 +184,6 @@ public class MonsterAI : MonoBehaviour
         if (isAttacking && stateInfo.normalizedTime >= 0.95f) // 0.95 is near the end
         {
             OnAttackComplete();
-            Debug.Log("attack complete");
         }
     }
 }

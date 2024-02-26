@@ -24,6 +24,7 @@ public class GameController : MonoBehaviour
             winLoseCanvas.SetActive(true); // Show the game over menu
             UIcanvas.SetActive(false);
             gameOverText.SetActive(true);
+            AudioManager.Instance.PlayDayMusic();
             Time.timeScale = 0f; // Pause the game
         }
 

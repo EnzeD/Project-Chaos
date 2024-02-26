@@ -16,10 +16,13 @@ public class ChaosManager : MonoBehaviour
     public GameObject player;
     private SpawnManager spawnManager;
 
+    private OffScreenIndicatorManager indicatorManager; // For offscreen indicators
+
     private void Start()
     {
         maxMonstersPerWave += minMonstersPerWave + resourceData.chaosLevel / 10;
         spawnManager = FindObjectOfType<SpawnManager>();
+        indicatorManager = FindObjectOfType<OffScreenIndicatorManager>();
     }
 
     private void Update()
@@ -57,7 +60,8 @@ public class ChaosManager : MonoBehaviour
             randomDirection.y = 0; // Ensure they spawn on the ground level
             Vector3 spawnPosition = player.transform.position + randomDirection;
 
-            Instantiate(monsterPrefab, spawnPosition, Quaternion.identity);
+            GameObject newMonster = Instantiate(monsterPrefab, spawnPosition, Quaternion.identity);
+            indicatorManager.AddMonster(newMonster.transform);
             spawnManager.totalMonstersAlive++;
         }
     }

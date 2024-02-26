@@ -24,7 +24,7 @@ public class LuckManager : MonoBehaviour
             Vector3 spawnPosition = player.transform.position + randomDirection;
 
             Instantiate(resourcePrefab, spawnPosition, Quaternion.identity);
-            resourceData.IncreaseLuck(1);
+            resourceData.IncreaseLuck(2);
         }
     }
 }

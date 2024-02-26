@@ -34,7 +34,7 @@ public class QuestManager : MonoBehaviour
         if (questNumber == 2)
         {
 
-            if (Input.GetMouseButtonDown(1))
+            if (Input.GetMouseButtonDown(1) || Input.GetKey("space"))
             {
                 questDone.SetActive(true);
                 parentAnimator = GetComponentInParent<Animator>();

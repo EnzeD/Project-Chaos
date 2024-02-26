@@ -21,6 +21,13 @@ public class SpawnManager : MonoBehaviour
     private int currentWaveIndex = 0; // Track the current wave index
     public int totalMonstersAlive = 0;
 
+    private OffScreenIndicatorManager indicatorManager; // For offscreen indicators
+
+    private void Start()
+    {
+        indicatorManager = FindObjectOfType<OffScreenIndicatorManager>();
+    }
+
     void Update()
     {
         if (lightingManager.IsNight && !spawnedForTonight)
@@ -52,15 +59,17 @@ public class SpawnManager : MonoBehaviour
             Vector3 spawnPosition = spawnCenter.position + randomDirection * randomDistance;
             spawnPosition.y = spawnCenter.position.y;
 
-            Instantiate(wave.monsterPrefab, spawnPosition, Quaternion.identity);
+            GameObject newMonster = Instantiate(wave.monsterPrefab, spawnPosition, Quaternion.identity);
+            indicatorManager.AddMonster(newMonster.transform);
 
             yield return null;
         }
     }
-    public void MonsterDied()
+    public void MonsterDied(Transform newMonster)
     {
         totalMonstersAlive--;
-         if (totalMonstersAlive <= 0)
+        indicatorManager.RemoveMonster(newMonster);
+        if (totalMonstersAlive <= 0)
         {
             AudioManager.Instance.PlayDayMusic();
         }

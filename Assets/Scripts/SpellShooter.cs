@@ -49,9 +49,9 @@ public class SpellShooter : MonoBehaviour
 
     void Update()
     {
-        
+
         // Check if the left mouse button is clicked, cooldown has elapsed, and no UI element is blocking the event
-        if (Input.GetMouseButton(1) && Time.time - lastShotTime >= shootingCooldown && !EventSystem.current.IsPointerOverGameObject() && !ToggleConstructionMenu.isOpen)
+        if ((Input.GetMouseButton(1) || Input.GetKey("space")) && Time.time - lastShotTime >= shootingCooldown && !EventSystem.current.IsPointerOverGameObject() && !ToggleConstructionMenu.isOpen)
         {
             ShootCurrentSpell();
             lastShotTime = Time.time; // Update the last shot time
