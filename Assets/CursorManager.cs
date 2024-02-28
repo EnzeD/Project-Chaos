@@ -21,16 +21,16 @@ public class CursorManager : MonoBehaviour
             // Check if the raycast hit a GameObject tagged as "Monster"
             if (hit.collider.CompareTag("Monster"))
             {
-                Cursor.SetCursor(monsterCursor, Vector2.zero, CursorMode.Auto);
+                Cursor.SetCursor(monsterCursor, Vector2.zero, CursorMode.ForceSoftware);
             }
             else
             {
-                Cursor.SetCursor(defaultCursor, Vector2.zero, CursorMode.Auto);
+                Cursor.SetCursor(defaultCursor, Vector2.zero, CursorMode.ForceSoftware);
             }
         }
         else
         {
-            Cursor.SetCursor(defaultCursor, Vector2.zero, CursorMode.Auto);
+            Cursor.SetCursor(defaultCursor, Vector2.zero, CursorMode.ForceSoftware);
         }
     }
 }
