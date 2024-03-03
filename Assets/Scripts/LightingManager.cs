@@ -12,7 +12,7 @@ public class LightingManager : MonoBehaviour
     [SerializeField, Range(0, 1)] private float daylightPercentage = 0.5f; // 50% day, 50% night by default
     public TextMeshProUGUI timeText;
 
-    [SerializeField] public static int DayCounter { get; private set; } = 1;
+    public int DayCounter = 1;
     private bool hasIncrementedToday = false;
 
     public bool IsNight = false;

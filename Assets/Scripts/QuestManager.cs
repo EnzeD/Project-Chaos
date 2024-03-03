@@ -12,6 +12,7 @@ public class QuestManager : MonoBehaviour
     private SpawnManager spawnManager;
     public int questNumber;
     private Animator parentAnimator;
+    public LightingManager lightingManager;
 
     void Start()
     {
@@ -66,7 +67,7 @@ public class QuestManager : MonoBehaviour
         }
         if (questNumber == 5)
         {
-            if (LightingManager.DayCounter >= 2 && spawnManager.totalMonstersAlive == 0)
+            if (lightingManager.DayCounter >= 2 && spawnManager.totalMonstersAlive == 0)
             {
                 questDone.SetActive(true);
                 parentAnimator = GetComponentInParent<Animator>();
