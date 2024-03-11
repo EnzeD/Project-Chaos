@@ -46,20 +46,36 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   title: Core Gameplay To do
   textList:
+  - s: 'Add Fences as build element:'
+    state: 0
+    show: 0
+    deleteQuestion: 0
+  - s: Add Player Upgrade Ability
+    state: 0
+    show: 0
+    deleteQuestion: 0
+  - s: Second type of mobs
+    state: 0
+    show: 0
+    deleteQuestion: 0
+  - s: 'Improve Combat 2: AOE & Explosion'
+    state: 0
+    show: 0
+    deleteQuestion: 0
   - s: Spawn ennemy wave
     state: 3
     show: 0
     deleteQuestion: 0
   - s: Add day counter
-    state: 0
+    state: 3
     show: 0
     deleteQuestion: 0
   - s: Add Chaos Shard
-    state: 0
+    state: 3
     show: 0
     deleteQuestion: 0
   - s: Add Luck Crystals
-    state: 0
+    state: 3
     show: 0
     deleteQuestion: 0
   - s: 'Add Tower Defense:
@@ -67,15 +83,7 @@ MonoBehaviour:
       - auto target
 
       - cast firebolt'
-    state: 0
-    show: 0
-    deleteQuestion: 0
-  - s: 'Add Fences as build element:'
-    state: 0
-    show: 0
-    deleteQuestion: 0
-  - s: Add Player Upgrade Ability
-    state: 0
+    state: 3
     show: 0
     deleteQuestion: 0
   - s: Add player spell system
@@ -95,15 +103,11 @@ MonoBehaviour:
     show: 0
     deleteQuestion: 0
   - s: Add more quests
-    state: 0
+    state: 3
     show: 0
     deleteQuestion: 0
   - s: Music sync with battle
     state: 3
-    show: 0
-    deleteQuestion: 0
-  - s: Second type of mobs
-    state: 0
     show: 0
     deleteQuestion: 0
   - s: 'Improve Combat:
@@ -112,10 +116,6 @@ MonoBehaviour:
 
       - damage'
     state: 3
-    show: 0
-    deleteQuestion: 0
-  - s: 'Improve Combat 2: AOE & Explosion'
-    state: 0
     show: 0
     deleteQuestion: 0
   - s: Add Player Model and Animation
@@ -151,10 +151,25 @@ MonoBehaviour:
     show: 0
     deleteQuestion: 0
   - s: 'Add building costs '
-    state: 0
+    state: 3
     show: 0
     deleteQuestion: 0
   - s: Monster damage to player or mainbuilding = more chaos
+    state: 3
+    show: 0
+    deleteQuestion: 0
+  - s: Add Earth and Water Ressources
+    state: 0
+    show: 0
+    deleteQuestion: 0
+  - s: 'Add Workbench building:
+
+      - Upgrade Firebolt Damage
+
+      - Upgrade
+      Tower Firing Rate
+
+      - Upgrade Player Movespeed?'
     state: 0
     show: 1
     deleteQuestion: 0
